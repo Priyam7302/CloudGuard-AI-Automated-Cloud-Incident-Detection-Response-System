@@ -7,8 +7,12 @@ from mitre.mitre_mapping import get_mitre_mapping
 from engines.context_engine import analyze_context
 from engines.evidence_engine import build_evidence
 from engines.threat_engine import generate_threat_report
-from engines.storage_engine import save_incident
 from engines.notification_engine import send_notification
+from engines.storage_engine import (
+    save_incident,
+    get_all_incidents,
+    get_incident
+)
 
 from reports.incident_report import generate_incident_report
 
@@ -23,6 +27,26 @@ def lambda_handler(event, context):
 
     print(json.dumps(event, indent=2))
 
+    # ==========================================
+    # API Gateway Request
+    # ==========================================
+    if event.get("httpMethod") == "GET":
+
+        incidents = get_all_incidents()
+
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps(incidents)
+        }
+
+    # ==========================================
+    # EventBridge Request (Existing Logic)
+    # ==========================================
+
     event_name = event["detail"]["eventName"]
 
     # MITRE Lookup
@@ -31,24 +55,28 @@ def lambda_handler(event, context):
     # Context Analysis
     context_report = analyze_context(event)
 
+    # Evidence
     evidence = build_evidence(mitre, context_report)
 
+    # Threat Report
     threat_report = generate_threat_report(evidence)
 
+    # Incident Report
     incident_report = generate_incident_report(
         mitre,
         context_report,
         evidence,
         threat_report
     )
+
+    # Save to S3
     incident_key = save_incident(incident_report)
 
+    # Send SNS Notification
     send_notification(
         incident_report,
         incident_key
     )
-
-
 
     print("========== MITRE ==========")
     print(json.dumps(mitre, indent=2))
@@ -69,9 +97,9 @@ def lambda_handler(event, context):
     print(incident_key)
 
     return {
-    "statusCode": 200,
-    "body": json.dumps({
-        "incident_report": incident_report,
-        "s3_key": incident_key
-    })
-}
+        "statusCode": 200,
+        "body": json.dumps({
+            "incident_report": incident_report,
+            "s3_key": incident_key
+        })
+    }
