@@ -1,0 +1,71 @@
+.table-container {
+    margin-top: 40px;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.table-container h2 {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 15px;
+    background: #334155;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #475569;
+}
+
+tr:hover {
+    background: #2b3648;
+}
+
+.severity,
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Severity */
+
+.critical {
+    background: #dc2626;
+    color: white;
+}
+
+.high {
+    background: #f59e0b;
+    color: black;
+}
+
+/* Status */
+
+.open {
+    background: #16a34a;
+    color: white;
+}
+
+.investigating {
+    background: #2563eb;
+    color: white;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+tbody tr:hover {
+    background: #334155;
+}
