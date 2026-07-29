@@ -1,73 +1,163 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import incidentsData from "../data/incidentsData";
+import { getIncident } from "../services/api";
+
 import "../styles/incidentdetails.css";
 
 function IncidentDetails() {
   const { id } = useParams();
 
-  const incident = incidentsData.find((item) => item.id === Number(id));
+  const [incident, setIncident] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchIncident();
+  }, []);
+
+  async function fetchIncident() {
+    try {
+      const response = await getIncident(id);
+      setIncident(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <h2 className="loading">Loading Incident...</h2>;
+  }
 
   if (!incident) {
-    return <h2>Incident Not Found</h2>;
+    return <h2 className="loading">Incident Not Found</h2>;
   }
 
   return (
     <div className="details-container">
-      <h1>Incident Details</h1>
+      {/* Header */}
 
-      <div className="details-grid">
-        <div className="detail-card">
-          <h3>Incident ID</h3>
-          <p>{incident.incidentId}</p>
+      <div className="summary-card">
+        <div className="summary-header">
+          <h1>{incident.event_name}</h1>
+
+          <span className={`severity-badge ${incident.severity.toLowerCase()}`}>
+            {incident.severity}
+          </span>
         </div>
 
-        <div className="detail-card">
-          <h3>Event</h3>
-          <p>{incident.event}</p>
-        </div>
+        <p className="summary-text">{incident.summary}</p>
 
-        <div className="detail-card">
-          <h3>Severity</h3>
-          <p>{incident.severity}</p>
-        </div>
-
-        <div className="detail-card">
+        <div className="score-section">
           <h3>Threat Score</h3>
-          <p>{incident.score}</p>
+
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${incident.threat_score}%` }}
+            ></div>
+          </div>
+
+          <strong>{incident.threat_score}/100</strong>
         </div>
 
-        <div className="detail-card">
-          <h3>MITRE Technique</h3>
-          <p>{incident.mitre}</p>
-        </div>
+        <p className="generated-time">Generated At: {incident.generated_at}</p>
+      </div>
 
-        <div className="detail-card">
-          <h3>Actor</h3>
-          <p>{incident.actor}</p>
-        </div>
+      {/* MITRE */}
 
-        <div className="detail-card">
-          <h3>Target User</h3>
-          <p>{incident.targetUser}</p>
-        </div>
+      <div className="section-card">
+        <h2>MITRE ATT&CK</h2>
 
-        <div className="detail-card">
-          <h3>Source IP</h3>
-          <p>{incident.sourceIP}</p>
-        </div>
+        <div className="info-grid">
+          <div>
+            <strong>Technique ID</strong>
+            <p>{incident.mitre.technique_id}</p>
+          </div>
 
-        <div className="detail-card">
-          <h3>Region</h3>
-          <p>{incident.region}</p>
-        </div>
+          <div>
+            <strong>Technique Name</strong>
+            <p>{incident.mitre.technique_name}</p>
+          </div>
 
-        <div className="detail-card">
-          <h3>Status</h3>
-          <p>{incident.status}</p>
+          <div>
+            <strong>Tactics</strong>
+            <p>{incident.mitre.tactics.join(", ")}</p>
+          </div>
         </div>
+      </div>
+
+      {/* Context */}
+
+      <div className="section-card">
+        <h2>Context</h2>
+
+        <div className="info-grid">
+          <div>
+            <strong>Actor</strong>
+            <p>{incident.context.actor}</p>
+          </div>
+
+          <div>
+            <strong>Target User</strong>
+            <p>{incident.context.target_user}</p>
+          </div>
+
+          <div>
+            <strong>Source IP</strong>
+            <p>{incident.context.source_ip}</p>
+          </div>
+
+          <div>
+            <strong>AWS Region</strong>
+            <p>{incident.context.aws_region}</p>
+          </div>
+
+          <div>
+            <strong>MFA</strong>
+            <p>{incident.context.mfa_used ? "Enabled" : "Disabled"}</p>
+          </div>
+
+          <div>
+            <strong>Cross User Action</strong>
+            <p>{incident.context.is_cross_user_action ? "Yes" : "No"}</p>
+          </div>
+
+          <div>
+            <strong>After Hours</strong>
+            <p>{incident.context.is_after_hours ? "Yes" : "No"}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Evidence */}
+
+      <div className="section-card">
+        <h2>Evidence</h2>
+
+        <ul className="list">
+          {incident.evidence.map((item, index) => (
+            <li key={index}>
+              <strong>{item.type}</strong> : {String(item.value)}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Recommendations */}
+
+      <div className="section-card">
+        <h2>Recommendations</h2>
+
+        <ul className="list">
+          {incident.recommendations.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
 
 export default IncidentDetails;
+

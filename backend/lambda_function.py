@@ -28,23 +28,43 @@ def lambda_handler(event, context):
     print(json.dumps(event, indent=2))
 
     # ==========================================
-    # API Gateway Request
+    # API Gateway
     # ==========================================
-    if event.get("httpMethod") == "GET":
 
-        incidents = get_all_incidents()
+    if event.get("requestContext"):
 
-        return {
-            "statusCode": 200,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps(incidents)
-        }
+        route = event["requestContext"]["routeKey"]
+
+        if route == "GET /incidents":
+
+            incidents = get_all_incidents()
+
+            return {
+                "statusCode": 200,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                "body": json.dumps(incidents)
+            }
+
+        elif route == "GET /incidents/{id}":
+
+            incident_id = event["pathParameters"]["id"]
+
+            incident = get_incident(incident_id)
+
+            return {
+                "statusCode": 200,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                "body": json.dumps(incident)
+            }
 
     # ==========================================
-    # EventBridge Request (Existing Logic)
+    # EventBridge Logic
     # ==========================================
 
     event_name = event["detail"]["eventName"]

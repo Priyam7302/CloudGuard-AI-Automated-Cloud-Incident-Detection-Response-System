@@ -1,9 +1,35 @@
-import incidentsData from "../data/incidentsData";
-import "../styles/incidenttable.css";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
+
+import "../styles/incidenttable.css";
 
 function IncidentTable() {
   const navigate = useNavigate();
+
+  const [incidents, setIncidents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchIncidents();
+  }, []);
+
+  async function fetchIncidents() {
+    try {
+      const response = await api.get("/incidents");
+
+      setIncidents(response.data);
+    } catch (error) {
+      console.error("Failed to fetch incidents:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <h3>Loading incidents...</h3>;
+  }
+
   return (
     <div className="table-container">
       <h2>Recent Incidents</h2>
@@ -16,19 +42,18 @@ function IncidentTable() {
             <th>Severity</th>
             <th>Threat Score</th>
             <th>MITRE</th>
-            <th>Status</th>
           </tr>
         </thead>
 
         <tbody>
-          {incidentsData.map((incident) => (
+          {incidents.map((incident) => (
             <tr
-              key={incident.id}
-              onClick={() => navigate(`/incidents/${incident.id}`)}
+              key={incident.incident_id}
+              onClick={() => navigate(`/incidents/${incident.incident_id}`)}
             >
-              <td>{incident.incidentId}</td>
+              <td>{incident.incident_id.slice(0, 8)}...</td>
 
-              <td>{incident.event}</td>
+              <td>{incident.event_name}</td>
 
               <td>
                 <span className={`severity ${incident.severity.toLowerCase()}`}>
@@ -36,15 +61,9 @@ function IncidentTable() {
                 </span>
               </td>
 
-              <td>{incident.score}</td>
+              <td>{incident.threat_score}</td>
 
-              <td>{incident.mitre}</td>
-
-              <td>
-                <span className={`status ${incident.status.toLowerCase()}`}>
-                  {incident.status}
-                </span>
-              </td>
+              <td>{incident.mitre.technique_id}</td>
             </tr>
           ))}
         </tbody>
