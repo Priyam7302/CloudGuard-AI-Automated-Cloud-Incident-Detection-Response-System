@@ -13,7 +13,7 @@ from engines.storage_engine import (
     get_all_incidents,
     get_incident
 )
-
+from engines.response_engine import execute_response
 from reports.incident_report import generate_incident_report
 
 sns = boto3.client("sns")
@@ -80,6 +80,7 @@ def lambda_handler(event, context):
 
     # Threat Report
     threat_report = generate_threat_report(evidence)
+    response = execute_response(event,threat_report)
 
     # Incident Report
     incident_report = generate_incident_report(
@@ -88,7 +89,9 @@ def lambda_handler(event, context):
         evidence,
         threat_report
     )
-
+    
+    incident_report["response"] = response
+    
     # Save to S3
     incident_key = save_incident(incident_report)
 
@@ -109,6 +112,9 @@ def lambda_handler(event, context):
 
     print("========== THREAT REPORT ==========")
     print(json.dumps(threat_report, indent=2))
+    
+    print("========== RESPONSE ==========")
+    print(json.dumps(response, indent=2))
 
     print("========== INCIDENT REPORT ==========")
     print(json.dumps(incident_report, indent=2))
