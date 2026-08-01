@@ -2,46 +2,37 @@
 CloudGuard AI
 Threat Engine
 
-Generates a threat assessment based on evidence.
+Builds the final threat assessment using
+the Risk Engine output.
 """
 
 
-def generate_threat_report(evidence):
+def generate_threat_report(risk_report):
 
-    score = 0
+    score = risk_report.get("risk_score", 0)
 
-    reasons = []
+    detections = risk_report.get("detections", [])
 
-    for item in evidence:
-
-        if item["type"] == "MITRE Technique":
-            score += 40
-            reasons.append("Mapped to MITRE ATT&CK")
-
-        elif item["type"] == "Cross User Action":
-            score += 30
-            reasons.append("Cross-user IAM operation")
-
-        elif item["type"] == "MFA Used" and item["value"] is False:
-            score += 20
-            reasons.append("Operation performed without MFA")
-
-        elif item["type"] == "After Hours Activity":
-            score += 10
-            reasons.append("Activity outside business hours")
-
-    # Determine severity
-    if score >= 80:
+    if score >= 100:
         severity = "Critical"
-    elif score >= 60:
+
+    elif score >= 70:
         severity = "High"
-    elif score >= 30:
+
+    elif score >= 40:
         severity = "Medium"
+
     else:
         severity = "Low"
 
     return {
+
         "threat_score": score,
+
         "severity": severity,
-        "reasons": reasons
+
+        "detections": detections,
+
+        "total_detections": len(detections)
+
     }

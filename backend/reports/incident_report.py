@@ -1,47 +1,141 @@
 """
 CloudGuard AI
 Incident Report Generator
+
+Creates the final incident report
+stored in S3 and displayed on the dashboard.
 """
 
-from datetime import datetime
 import uuid
+from datetime import datetime, timezone
 
 
-def generate_incident_report(mitre, context, evidence, threat_report):
+def generate_incident_report(
 
-    report = {
+    context,
+
+    risk,
+
+    threat,
+
+    response
+
+):
+
+    incident = {
+
+        # ====================================
+        # Incident Information
+        # ====================================
+
         "incident_id": str(uuid.uuid4()),
 
-        "generated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at": datetime.now(
+            timezone.utc
+        ).isoformat(),
 
-        "event_name": context["event_name"],
+        # ====================================
+        # Event
+        # ====================================
 
-        "severity": threat_report["severity"],
+        "event": {
 
-        "threat_score": threat_report["threat_score"],
+            "event_name": context.get(
+                "event_name"
+            ),
 
-        "summary": (
-            f"{context['event_name']} detected against IAM user "
-            f"'{context['target_user']}' by "
-            f"'{context['actor']}'."
-        ),
+            "event_source": context.get(
+                "event_source"
+            ),
 
-        "mitre": {
-            "technique_id": mitre["technique_id"],
-            "technique_name": mitre["technique_name"],
-            "tactics": mitre["tactics"]
+            "event_time": context.get(
+                "event_time"
+            )
+
         },
 
-        "context": context,
+        # ====================================
+        # Actor
+        # ====================================
 
-        "evidence": evidence,
+        "actor": {
 
-        "recommendations": [
-            "Review CloudTrail logs.",
-            "Verify IAM activity.",
-            "Rotate credentials if unauthorized.",
-            "Enable MFA if not already enabled."
-        ]
+            "user": context.get(
+                "actor"
+            ),
+
+            "target_user": context.get(
+                "target_user"
+            ),
+
+            "user_type": context.get(
+                "user_type"
+            ),
+
+            "account_id": context.get(
+                "account_id"
+            )
+
+        },
+
+        # ====================================
+        # Network
+        # ====================================
+
+        "network": {
+
+            "source_ip": context.get(
+                "source_ip"
+            ),
+
+            "aws_region": context.get(
+                "aws_region"
+            ),
+
+            "user_agent": context.get(
+                "user_agent"
+            )
+
+        },
+
+        # ====================================
+        # Context
+        # ====================================
+
+        "context": {
+
+            "mfa_used": context.get(
+                "mfa_used"
+            ),
+
+            "after_hours": context.get(
+                "is_after_hours"
+            ),
+
+            "cross_user_action": context.get(
+                "is_cross_user_action"
+            )
+
+        },
+
+        # ====================================
+        # Risk
+        # ====================================
+
+        "risk": risk,
+
+        # ====================================
+        # Threat
+        # ====================================
+
+        "threat": threat,
+
+        # ====================================
+        # Automated Response
+        # ====================================
+
+        "response": response
+
     }
 
-    return report
+    return incident

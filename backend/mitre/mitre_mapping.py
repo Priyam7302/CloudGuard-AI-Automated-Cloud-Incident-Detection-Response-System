@@ -1,31 +1,31 @@
 """
 CloudGuard AI
-MITRE ATT&CK Knowledge Base
 
-This module maps AWS IAM events to the corresponding
-MITRE ATT&CK techniques.
+MITRE ATT&CK Mapping
 """
 
 MITRE_MAPPING = {
 
+    # ==========================
+    # IAM
+    # ==========================
+
     "CreateUser": {
         "technique_id": "T1136",
         "technique_name": "Create Account",
-        "tactics": [
-            "Persistence"
-        ],
-        "description":
-        "Creates a new IAM user which may be used to establish persistence."
+        "tactics": ["Persistence"]
     },
 
     "CreateAccessKey": {
         "technique_id": "T1098",
         "technique_name": "Account Manipulation",
-        "tactics": [
-            "Persistence"
-        ],
-        "description":
-        "Creates new credentials for an existing IAM account."
+        "tactics": ["Persistence"]
+    },
+
+    "CreateLoginProfile": {
+        "technique_id": "T1098",
+        "technique_name": "Account Manipulation",
+        "tactics": ["Persistence"]
     },
 
     "AttachUserPolicy": {
@@ -34,24 +34,122 @@ MITRE_MAPPING = {
         "tactics": [
             "Persistence",
             "Privilege Escalation"
-        ],
-        "description":
-        "Attaches permissions to an IAM user, potentially increasing privileges."
+        ]
+    },
+
+    "AttachGroupPolicy": {
+        "technique_id": "T1098",
+        "technique_name": "Account Manipulation",
+        "tactics": [
+            "Persistence",
+            "Privilege Escalation"
+        ]
+    },
+
+    "PutUserPolicy": {
+        "technique_id": "T1098",
+        "technique_name": "Account Manipulation",
+        "tactics": [
+            "Persistence",
+            "Privilege Escalation"
+        ]
+    },
+
+    "UpdateAssumeRolePolicy": {
+        "technique_id": "T1484",
+        "technique_name": "Domain or Trust Policy Modification",
+        "tactics": [
+            "Privilege Escalation"
+        ]
+    },
+
+    "DeleteTrail": {
+        "technique_id": "T1562",
+        "technique_name": "Impair Defenses",
+        "tactics": ["Defense Evasion"]
+    },
+
+    "StopLogging": {
+        "technique_id": "T1562",
+        "technique_name": "Impair Defenses",
+        "tactics": ["Defense Evasion"]
+    },
+
+    # ==========================
+    # EC2
+    # ==========================
+
+    "RunInstances": {
+        "technique_id": "T1583.002",
+        "technique_name": "Acquire Infrastructure: Virtual Private Server",
+        "tactics": ["Resource Development"]
+    },
+
+    "StartInstances": {
+        "technique_id": "T1583.002",
+        "technique_name": "Acquire Infrastructure: Virtual Private Server",
+        "tactics": ["Resource Development"]
+    },
+
+    "StopInstances": {
+        "technique_id": "T1489",
+        "technique_name": "Service Stop",
+        "tactics": ["Impact"]
+    },
+
+    "TerminateInstances": {
+        "technique_id": "T1485",
+        "technique_name": "Data Destruction",
+        "tactics": ["Impact"]
+    },
+
+    "CreateSnapshot": {
+        "technique_id": "T1005",
+        "technique_name": "Data from Local System",
+        "tactics": ["Collection"]
+    },
+
+    "AuthorizeSecurityGroupIngress": {
+        "technique_id": "T1562",
+        "technique_name": "Modify Security Controls",
+        "tactics": ["Defense Evasion"]
+    },
+
+    "AuthorizeSecurityGroupEgress": {
+        "technique_id": "T1562",
+        "technique_name": "Modify Security Controls",
+        "tactics": ["Defense Evasion"]
+    },
+
+    "RevokeSecurityGroupIngress": {
+        "technique_id": "T1562",
+        "technique_name": "Modify Security Controls",
+        "tactics": ["Defense Evasion"]
+    },
+
+    "RevokeSecurityGroupEgress": {
+        "technique_id": "T1562",
+        "technique_name": "Modify Security Controls",
+        "tactics": ["Defense Evasion"]
     }
 
 }
 
+
 def get_mitre_mapping(event_name):
-    """
-    Returns MITRE ATT&CK information for an AWS event.
-    """
 
     return MITRE_MAPPING.get(
+
         event_name,
+
         {
+
             "technique_id": "UNKNOWN",
-            "technique_name": "Unknown Technique",
-            "tactics": [],
-            "description": "No MITRE mapping found."
+
+            "technique_name": "Unknown",
+
+            "tactics": []
+
         }
+
     )
