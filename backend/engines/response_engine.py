@@ -17,7 +17,7 @@ def execute_response(event, threat_report):
 
     detail = event.get("detail", {})
 
-    response_elements = detail.get("responseElements", {})
+    response_elements = detail.get("responseElements") or {}
 
     access_key = response_elements.get("accessKey", {})
 
