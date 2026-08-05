@@ -904,15 +904,6 @@ This matches the exact structure produced by `reports/incident_report.py` and st
 
 </details>
 
----
-
-## 📜 License
-
-This project is available under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-*(No `LICENSE` file currently exists in the repository — add one to make this section accurate, or update it to reflect your chosen license.)*
-
----
-
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!
