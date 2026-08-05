@@ -9,7 +9,6 @@
 
 <!-- Banner Placeholder -->
 <!-- ![CloudGuard AI Banner](docs/assets/banner.png) -->
-`[ 🖼️ Banner Placeholder — see "Suggested Visual Assets" section below ]`
 
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-FF9900?style=for-the-badge&logo=awslambda&logoColor=white)](https://aws.amazon.com/lambda/)
@@ -20,21 +19,8 @@
 [![boto3](https://img.shields.io/badge/boto3-AWS%20SDK-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)](https://boto3.amazonaws.com/)
 [![MITRE ATT&CK](https://img.shields.io/badge/MITRE-ATT%26CK%20Mapped-C8102E?style=for-the-badge)](https://attack.mitre.org/)
 
-[![GitHub Stars](https://img.shields.io/github/stars/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System?style=flat-square&color=yellow)](https://github.com/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System?style=flat-square&color=blue)](https://github.com/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System/network)
-[![GitHub Issues](https://img.shields.io/github/issues/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System?style=flat-square&color=red)](https://github.com/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System/issues)
-[![Last Commit](https://img.shields.io/github/last-commit/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System?style=flat-square&color=brightgreen)](https://github.com/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/Priyam7302/CloudGuard-AI-Automated-Cloud-Incident-Detection-Response-System?style=flat-square&color=orange)](#)
-[![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](#license)
-[![Status](https://img.shields.io/badge/Status-Active%20Development-success?style=flat-square)](#)
-
 </div>
 
----
-
-> ⚠️ **Honesty Note (read this first):** This README documents *exactly* what is implemented in the `backend/` source code today. Every capability described in the AWS Console / architecture diagrams was verified against the actual Python modules in this repository. Anything that is **designed but not yet coded** is explicitly labeled **`🔮 Future Enhancement`**. Nothing here is inflated for effect — that's the point of a security engineering project.
-
----
 
 ## 📚 Table of Contents
 
