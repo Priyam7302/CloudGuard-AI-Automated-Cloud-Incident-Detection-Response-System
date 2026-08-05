@@ -18,6 +18,8 @@ function IncidentTable() {
     try {
       const response = await api.get("/incidents");
 
+      console.log("Incidents:", response.data);
+
       setIncidents(response.data);
     } catch (error) {
       console.error("Failed to fetch incidents:", error);
@@ -46,26 +48,60 @@ function IncidentTable() {
         </thead>
 
         <tbody>
-          {incidents.map((incident) => (
-            <tr
-              key={incident.incident_id}
-              onClick={() => navigate(`/incidents/${incident.incident_id}`)}
-            >
-              <td>{incident.incident_id.slice(0, 8)}...</td>
+          {incidents.map((incident) => {
+            // Supports BOTH old and new backend formats
 
-              <td>{incident.event_name}</td>
+            const eventName =
+              incident.event?.event_name || incident.event_name || "Unknown";
 
-              <td>
-                <span className={`severity ${incident.severity.toLowerCase()}`}>
-                  {incident.severity}
-                </span>
-              </td>
+            const severity =
+              incident.threat?.severity ||
+              incident.risk?.severity ||
+              incident.severity ||
+              "Unknown";
 
-              <td>{incident.threat_score}</td>
+            const threatScore =
+              incident.threat?.threat_score ??
+              incident.risk?.risk_score ??
+              incident.threat_score ??
+              "-";
 
-              <td>{incident.mitre.technique_id}</td>
-            </tr>
-          ))}
+            const mitreTechnique =
+              incident.mitre?.technique_id ||
+              incident.threat?.detections?.find(
+                (d) => typeof d.mitre === "object",
+              )?.mitre?.technique_id ||
+              incident.risk?.detections?.find(
+                (d) => typeof d.mitre === "object",
+              )?.mitre?.technique_id ||
+              "-";
+
+            return (
+              <tr
+                key={incident.incident_id}
+                onClick={() => navigate(`/incidents/${incident.incident_id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <td>
+                  {incident.incident_id
+                    ? `${incident.incident_id.slice(0, 8)}...`
+                    : "-"}
+                </td>
+
+                <td>{eventName}</td>
+
+                <td>
+                  <span className={`severity ${severity.toLowerCase()}`}>
+                    {severity}
+                  </span>
+                </td>
+
+                <td>{threatScore}</td>
+
+                <td>{mitreTechnique}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
