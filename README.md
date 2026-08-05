@@ -626,46 +626,6 @@ The frontend is a lightweight React (Vite) interface developed solely for demons
 
 ---
 
-## 🎨 Suggested Visual Assets
-
-<details>
-<summary><strong>🖼️ AI Image Prompts</strong> (for banner / README illustrations)</summary>
-
-| Asset | Prompt |
-|---|---|
-| Cloud Architecture | "Isometric enterprise diagram of an AWS serverless security pipeline: CloudTrail, EventBridge, Lambda, S3, and SNS icons connected by glowing data-flow lines, dark navy background, clean vector style" |
-| SOC Dashboard | "Modern dark-mode security operations center dashboard with severity-coded incident cards (red/orange/yellow/green), line and bar charts, realistic enterprise SaaS UI" |
-| Cloud Monitoring | "Abstract visualization of real-time cloud API event streams flowing into a central detection engine, particle-style data streams, blue and orange accent colors" |
-| Threat Detection | "Digital shield icon overlaid on a stream of binary/API log data being filtered through a funnel labeled 'Detection Rules', flat enterprise illustration style" |
-| Digital Forensics | "Magnifying glass examining a structured JSON evidence file with a padlock and timestamp, minimalist security-themed illustration" |
-| Incident Response | "Circular lifecycle diagram: Detect → Analyze → Respond → Preserve → Notify, with AWS-orange accent icons at each stage" |
-| Serverless Architecture | "Lambda function icon at the center of a hub-and-spoke diagram connecting to S3 bucket, SNS topic, IAM, and CloudWatch icons" |
-
-</details>
-
-<details>
-<summary><strong>🎞️ GIF Suggestions</strong></summary>
-
-- Terminal GIF: simulated `CreateUser` / `CreateAccessKey` CLI call followed by the SNS email arriving
-- Screen recording: CloudWatch Logs streaming `context_report` → `risk_report` → `threat_report` → `response_report` in real time
-- Dashboard GIF: navigating from Incidents list → Incident Details, showing MITRE technique and triggered rules
-- S3 console GIF: an `incidents/{id}.json` object appearing moments after a simulated attack
-
-</details>
-
-<details>
-<summary><strong>🎬 Demo Section (placeholders)</strong></summary>
-
-- `[ Demo Video Placeholder — 90s walkthrough of a simulated CreateAccessKey attack end-to-end ]`
-- `[ Architecture Walkthrough Video Placeholder ]`
-- `[ Screenshot Placeholder — Dashboard overview ]`
-- `[ Screenshot Placeholder — Incident Details page with MITRE mapping ]`
-- `[ Screenshot Placeholder — Raw SNS email alert ]`
-
-</details>
-
----
-
 ## 🚀 Installation & Deployment
 
 ### Prerequisites
