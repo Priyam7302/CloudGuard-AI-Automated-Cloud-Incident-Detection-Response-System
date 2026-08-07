@@ -31,15 +31,12 @@ class ModifySecurityGroupRule(DetectionRule):
         if context.get("event_name") not in [
 
             "AuthorizeSecurityGroupIngress",
-
             "AuthorizeSecurityGroupEgress",
-
             "RevokeSecurityGroupIngress",
-
-            "RevokeSecurityGroupEgress"
+            "RevokeSecurityGroupEgress",
+            "ModifySecurityGroupRules"
 
         ]:
-
             return Detection().to_dict()
 
         return Detection(
@@ -54,7 +51,7 @@ class ModifySecurityGroupRule(DetectionRule):
 
             score=self.score,
 
-            reason="Security Group rules modified.",
+            reason=f"Security Group modified via {context.get('event_name')}.",
 
             recommendation=self.recommendation,
 
