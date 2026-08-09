@@ -123,6 +123,9 @@ def lambda_handler(event, context):
     print("========== STORED ==========")
     print(incident_key)
 
+
+    print("CloudGuard Lambda deployed through GitHub Actions") 
+     
     return {
 
         "statusCode": 200,
