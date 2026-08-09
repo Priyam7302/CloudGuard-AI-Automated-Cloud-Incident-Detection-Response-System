@@ -1,0 +1,111 @@
+name: Deploy CloudGuard Backend to AWS Lambda
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy CloudGuard Lambda
+    runs-on: ubuntu-latest
+
+    steps:
+      # --------------------------------------------------
+      # 1. Checkout CloudGuard repository
+      # --------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --------------------------------------------------
+      # 2. Setup Python
+      # --------------------------------------------------
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # --------------------------------------------------
+      # 3. Prepare Lambda deployment package
+      # --------------------------------------------------
+      - name: Prepare Lambda package
+        shell: bash
+        run: |
+          set -e
+
+          echo "Preparing CloudGuard Lambda package..."
+
+          cd backend
+
+          # Install dependencies only if requirements.txt
+          # contains packages.
+          if [ -s requirements.txt ]; then
+            echo "Installing Python dependencies..."
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt -t .
+          else
+            echo "requirements.txt is empty. No external dependencies to install."
+          fi
+
+          # Remove unnecessary Python cache files
+          find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+          find . -type f -name "*.pyc" -delete
+
+          # Create ZIP with backend contents at ZIP root
+          zip -r ../cloudguard-backend.zip . \
+            -x "*.git*" \
+            -x "*.pyc" \
+            -x "__pycache__/*"
+
+          cd ..
+
+          echo "Lambda package created:"
+          ls -lh cloudguard-backend.zip
+
+      # --------------------------------------------------
+      # 4. Authenticate to AWS using GitHub OIDC
+      # --------------------------------------------------
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::604579607900:role/CloudGuard-GitHubActions-LambdaDeploy
+          aws-region: us-east-1
+
+      # --------------------------------------------------
+      # 5. Verify AWS identity
+      # --------------------------------------------------
+      - name: Verify AWS identity
+        run: |
+          echo "AWS identity:"
+          aws sts get-caller-identity
+
+      # --------------------------------------------------
+      # 6. Deploy package to CloudGuard Lambda
+      # --------------------------------------------------
+      - name: Deploy CloudGuard Lambda
+        run: |
+          echo "Deploying CloudGuard backend..."
+
+          aws lambda update-function-code \
+            --function-name CloudGuardIAM-EventProcessor-us \
+            --zip-file fileb://cloudguard-backend.zip
+
+          echo "CloudGuard Lambda deployment completed."
+
+      # --------------------------------------------------
+      # 7. Verify deployed Lambda
+      # --------------------------------------------------
+      - name: Verify Lambda deployment
+        run: |
+          echo "Lambda information:"
+          
+          aws lambda get-function \
+            --function-name CloudGuardIAM-EventProcessor-us \
+            --query 'Configuration.[FunctionName,Runtime,Handler,LastModified,CodeSize]' \
+            --output table
+
+          echo "Deployment verification completed."
