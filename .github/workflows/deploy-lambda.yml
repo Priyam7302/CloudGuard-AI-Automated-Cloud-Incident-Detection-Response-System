@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       # --------------------------------------------------
       # 1. Checkout CloudGuard repository
       # --------------------------------------------------
@@ -41,8 +42,6 @@ jobs:
 
           cd backend
 
-          # Install dependencies only if requirements.txt
-          # contains packages.
           if [ -s requirements.txt ]; then
             echo "Installing Python dependencies..."
             python -m pip install --upgrade pip
@@ -51,11 +50,13 @@ jobs:
             echo "requirements.txt is empty. No external dependencies to install."
           fi
 
-          # Remove unnecessary Python cache files
+          echo "Removing Python cache files..."
+
           find . -type d -name "__pycache__" -prune -exec rm -rf {} +
           find . -type f -name "*.pyc" -delete
 
-          # Create ZIP with backend contents at ZIP root
+          echo "Creating Lambda ZIP package..."
+
           zip -r ../cloudguard-backend.zip . \
             -x "*.git*" \
             -x "*.pyc" \
@@ -67,7 +68,64 @@ jobs:
           ls -lh cloudguard-backend.zip
 
       # --------------------------------------------------
-      # 4. Authenticate to AWS using GitHub OIDC
+      # 4. DEBUG GitHub OIDC claims
+      # --------------------------------------------------
+      # Temporary step.
+      # We are using this to see the exact OIDC claims
+      # GitHub is sending to AWS.
+      # --------------------------------------------------
+      - name: Debug GitHub OIDC claims
+        shell: bash
+        env:
+          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
+          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
+        run: |
+          set -e
+
+          echo "Requesting GitHub OIDC token..."
+
+          TOKEN=$(curl -sSf \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" \
+            | jq -r '.value')
+
+          if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+            echo "ERROR: Could not obtain GitHub OIDC token."
+            exit 1
+          fi
+
+          echo "OIDC token received."
+
+          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2)
+
+          # Add Base64 padding if required
+          PADDING=$((4 - ${#PAYLOAD} % 4))
+
+          if [ "$PADDING" -ne 4 ]; then
+            PAYLOAD="${PAYLOAD}$(printf '=%.0s' $(seq 1 $PADDING))"
+          fi
+
+          DECODED=$(echo "$PAYLOAD" | base64 -d 2>/dev/null)
+
+          echo ""
+          echo "=============================================="
+          echo "GitHub OIDC Claims"
+          echo "=============================================="
+
+          echo "$DECODED" | jq '{
+            iss: .iss,
+            aud: .aud,
+            sub: .sub,
+            repository: .repository,
+            repository_owner: .repository_owner,
+            ref: .ref,
+            workflow: .workflow
+          }'
+
+          echo "=============================================="
+
+      # --------------------------------------------------
+      # 5. Authenticate to AWS using GitHub OIDC
       # --------------------------------------------------
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -76,7 +134,7 @@ jobs:
           aws-region: us-east-1
 
       # --------------------------------------------------
-      # 5. Verify AWS identity
+      # 6. Verify AWS identity
       # --------------------------------------------------
       - name: Verify AWS identity
         run: |
@@ -84,10 +142,12 @@ jobs:
           aws sts get-caller-identity
 
       # --------------------------------------------------
-      # 6. Deploy package to CloudGuard Lambda
+      # 7. Deploy package to CloudGuard Lambda
       # --------------------------------------------------
       - name: Deploy CloudGuard Lambda
         run: |
+          set -e
+
           echo "Deploying CloudGuard backend..."
 
           aws lambda update-function-code \
@@ -97,12 +157,14 @@ jobs:
           echo "CloudGuard Lambda deployment completed."
 
       # --------------------------------------------------
-      # 7. Verify deployed Lambda
+      # 8. Verify deployed Lambda
       # --------------------------------------------------
       - name: Verify Lambda deployment
         run: |
+          set -e
+
           echo "Lambda information:"
-          
+
           aws lambda get-function \
             --function-name CloudGuardIAM-EventProcessor-us \
             --query 'Configuration.[FunctionName,Runtime,Handler,LastModified,CodeSize]' \
