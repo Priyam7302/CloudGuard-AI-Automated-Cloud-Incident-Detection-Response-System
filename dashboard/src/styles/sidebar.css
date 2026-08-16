@@ -1,32 +1,218 @@
 .sidebar {
-    width: 220px;
-    background-color: #1e293b;
-    color: white;
-    min-height: calc(100vh - 60px);
-    padding: 20px;
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sidebar-w);
+  display: flex;
+  flex-direction: column;
+  background: rgba(13, 20, 36, 0.88);
+  backdrop-filter: blur(14px);
+  border-right: 1px solid var(--border);
+  z-index: 40;
+  transition: transform 240ms var(--ease);
 }
 
-.sidebar ul {
-    list-style: none;
+/* Brand ------------------------------------------------------------------ */
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 18px 18px 16px;
+  border-bottom: 1px solid var(--hairline);
 }
 
-.sidebar li {
-    margin: 20px 0;
-    cursor: pointer;
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  color: var(--accent);
+  background: var(--accent-tint);
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  box-shadow: 0 0 22px rgba(34, 211, 238, 0.16);
 }
 
-.sidebar a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 12px;
-    border-radius: 8px;
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
 }
 
-.sidebar a:hover {
-    background-color: #334155;
+.brand-text strong {
+  font-size: 14.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
 }
 
-.sidebar a.active {
-    background-color: #2563eb;
+.brand-text span {
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sidebar-close {
+  display: none;
+  margin-left: auto;
+}
+
+/* Nav -------------------------------------------------------------------- */
+
+.sidebar-nav {
+  flex: 1;
+  padding: 14px 12px;
+  overflow-y: auto;
+}
+
+.nav-section + .nav-section {
+  margin-top: 20px;
+}
+
+.nav-section-label {
+  font-size: 10.5px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  padding: 0 10px;
+  margin-bottom: 7px;
+}
+
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 10px;
+  margin: 2px 0;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition:
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.nav-link:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.nav-link.active {
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-link.active::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
+}
+
+.nav-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+}
+
+.nav-link.active .nav-count {
+  background: rgba(34, 211, 238, 0.14);
+  border-color: rgba(34, 211, 238, 0.3);
+  color: var(--accent);
+}
+
+/* Footer ----------------------------------------------------------------- */
+
+.sidebar-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--hairline);
+}
+
+.sidebar-foot-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.sidebar-foot-text strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.sidebar-foot-text span {
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+.live-dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.live-dot.on {
+  background: #22c55e;
+}
+
+.live-dot.err {
+  background: var(--fail-text);
+}
+
+.live-dot.on::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  animation: pulse-ring 2.2s var(--ease) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  70%,
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Mobile ----------------------------------------------------------------- */
+
+@media (max-width: 920px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: min(300px, 84vw);
+    box-shadow: var(--shadow-2);
+  }
+
+  .sidebar.open {
+    transform: none;
+  }
+
+  .sidebar-close {
+    display: inline-flex;
+  }
 }

@@ -1,13 +1,22 @@
 import "../styles/summarycard.css";
 
-function SummaryCard(props) {
+/**
+ * Stat tile: label + value (+ optional hint), with a tone-tinted icon chip.
+ * Tones map to severity levels plus "accent" and "neutral".
+ */
+function SummaryCard({ label, value, hint, icon: Icon, tone = "neutral" }) {
   return (
-    <div className="summary-card">
-
-      <h3>{props.title}</h3>
-
-      <h1>{props.value}</h1>
-
+    <div className={`stat-card tone-${tone}`}>
+      <div className="stat-top">
+        <p className="stat-label">{label}</p>
+        {Icon && (
+          <span className="stat-icon">
+            <Icon size={16} />
+          </span>
+        )}
+      </div>
+      <p className="stat-value">{value}</p>
+      {hint && <p className="stat-hint">{hint}</p>}
     </div>
   );
 }
