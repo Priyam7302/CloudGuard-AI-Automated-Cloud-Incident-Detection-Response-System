@@ -1,0 +1,183 @@
+.aws-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: -8px 0 18px;
+}
+
+/* Pipeline strip ---------------------------------------------------------- */
+
+.pipeline-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.pipeline-step-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pipeline-step {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+}
+
+.pipeline-step.hot {
+  background: var(--accent-tint);
+  border-color: rgba(34, 211, 238, 0.35);
+  color: var(--accent);
+}
+
+.pipeline-arrow {
+  color: var(--ink-3);
+}
+
+.pipeline-note {
+  font-size: 12px;
+  margin-left: auto;
+}
+
+/* Service grid ------------------------------------------------------------ */
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.service-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.service-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--accent-tint);
+  border: 1px solid rgba(34, 211, 238, 0.22);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.service-role {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.service-desc {
+  font-size: 13px;
+  color: var(--ink-2);
+  flex: 1;
+}
+
+.service-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 10px;
+}
+
+.service-stat {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.service-stat.ok { color: var(--ok-text); }
+.service-stat.fail { color: var(--fail-text); }
+
+.service-extra {
+  font-size: 11.5px;
+  max-width: 45%;
+}
+
+/* Monitored surfaces ------------------------------------------------------- */
+
+.section-heading {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  margin: 24px 0 14px;
+}
+
+.surface-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.surface-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.surface-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.surface-body .service-desc {
+  margin-top: 4px;
+}
+
+.surface-count {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.surface-count strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  font-variant-numeric: normal;
+}
+
+.surface-count span {
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 1150px) {
+  .service-grid,
+  .surface-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .service-grid,
+  .surface-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pipeline-note {
+    margin-left: 0;
+  }
+}

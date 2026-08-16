@@ -1,96 +1,182 @@
-.analytics-container {
-    padding: 30px;
-    color: #f8fafc;
-}
-
-.analytics-container h1 {
-    margin-bottom: 30px;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
-
-.stat-card {
-    background: #1e293b;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
-}
-
-.stat-card h3 {
-    color: #94a3b8;
-    margin-bottom: 15px;
-    font-size: 16px;
-}
-
-.stat-card h2 {
-    font-size: 34px;
-    color: white;
-    margin: 0;
-}
-
-.stat-card.critical {
-    border-left: 6px solid #dc2626;
-}
-
-.stat-card.warning {
-    border-left: 6px solid #f59e0b;
-}
-
-@media (max-width: 900px) {
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .chart-card {
-    background: #1e293b;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    min-height: 420px;
-    margin: 25px;
+  min-width: 0;
 }
 
-.chart-card h2 {
-    margin-bottom: 20px;
-    color: white;
-    font-size: 22px;
-    font-weight: 600;
-}
-.charts-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-    margin-top: 30px;
-}
-@media (max-width: 900px) {
+/* Donut ------------------------------------------------------------------ */
 
-    .charts-grid {
-        grid-template-columns: 1fr;
-    }
-
-}
-.chart-card,
-.stat-card {
-    transition: .25s ease;
+.donut-layout {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.chart-card:hover,
-.stat-card:hover {
+.donut-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
 
-    transform: translateY(-4px);
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  line-height: 1.2;
+}
 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+.donut-center strong {
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
 
+.donut-center span {
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.donut-legend {
+  width: 168px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-name {
+  flex: 1;
+  color: var(--ink-2);
+}
+
+.legend-value {
+  font-weight: 600;
+}
+
+.legend-pct {
+  width: 38px;
+  text-align: right;
+  font-size: 12px;
+}
+
+/* Tooltip ---------------------------------------------------------------- */
+
+.chart-tip {
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-2);
+  padding: 8px 12px;
+  font-size: 12.5px;
+}
+
+.chart-tip-label {
+  color: var(--ink-3);
+  font-size: 11.5px;
+  margin-bottom: 4px;
+}
+
+.chart-tip-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.chart-tip-row strong {
+  font-size: 13px;
+}
+
+.chart-tip-name {
+  color: var(--ink-2);
+}
+
+.chart-tip-key {
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* Category bars ----------------------------------------------------------- */
+
+.category-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.category-name {
+  width: 90px;
+  flex-shrink: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.category-track {
+  flex: 1;
+  height: 14px;
+  border-radius: 5px;
+  background: var(--chart-1-soft);
+  overflow: hidden;
+}
+
+.category-fill {
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--chart-1);
+  transition: width 600ms var(--ease);
+}
+
+.category-count {
+  width: 34px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Responsive -------------------------------------------------------------- */
+
+@media (max-width: 1080px) {
+  .charts-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .donut-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .donut-legend {
+    width: 100%;
+  }
 }

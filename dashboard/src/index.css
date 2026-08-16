@@ -1,13 +1,105 @@
+/* ==========================================================================
+   CloudGuard AI — design tokens & shared primitives
+   Dark security-operations theme. Every component reads from these tokens.
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --bg: #0a101f;
+  --surface: #111a2b;
+  --surface-2: #17223a;
+  --surface-3: #1d2b47;
+
+  /* Lines */
+  --border: rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(148, 163, 184, 0.26);
+  --hairline: rgba(148, 163, 184, 0.09);
+
+  /* Ink */
+  --ink: #eef2f9;
+  --ink-2: #a8b3c9;
+  --ink-3: #8494ad;
+
+  /* Accent */
+  --accent: #22d3ee;
+  --accent-strong: #06b6d4;
+  --accent-ink: #052730;
+  --accent-tint: rgba(34, 211, 238, 0.1);
+
+  /* Chart series (validated against --surface) */
+  --chart-1: #3987e5;
+  --chart-1-soft: rgba(57, 135, 229, 0.16);
+
+  /* Severity — status scale (marks); *-text variants pass 4.5:1 as text */
+  --sev-critical: #d03b3b;
+  --sev-high: #ec835a;
+  --sev-medium: #fab219;
+  --sev-low: #0ca30c;
+  --sev-critical-text: #f87171;
+  --sev-high-text: #fdac7e;
+  --sev-medium-text: #fbbf24;
+  --sev-low-text: #4ade80;
+  --sev-critical-tint: rgba(208, 59, 59, 0.14);
+  --sev-high-tint: rgba(236, 131, 90, 0.13);
+  --sev-medium-tint: rgba(250, 178, 25, 0.12);
+  --sev-low-tint: rgba(12, 163, 12, 0.14);
+  --sev-unknown-text: #a8b3c9;
+  --sev-unknown-tint: rgba(148, 163, 184, 0.12);
+
+  /* Status pills (response actions) */
+  --ok-text: #4ade80;
+  --ok-tint: rgba(34, 197, 94, 0.12);
+  --fail-text: #f87171;
+  --fail-tint: rgba(239, 68, 68, 0.12);
+  --skip-text: #a8b3c9;
+  --skip-tint: rgba(148, 163, 184, 0.12);
+
+  /* Geometry */
+  --radius-lg: 16px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 250px;
+  --topbar-h: 64px;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(3, 7, 18, 0.4);
+  --shadow-2: 0 16px 40px -16px rgba(3, 7, 18, 0.7);
+
+  /* Type */
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Motion */
+  --ease: cubic-bezier(0.3, 0.7, 0.4, 1);
+  --fast: 140ms;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  color-scheme: dark;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #0f172a;
-  color: white;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(52rem 32rem at 82% -12%, rgba(34, 211, 238, 0.07), transparent 60%),
+    radial-gradient(46rem 30rem at -8% 4%, rgba(57, 135, 229, 0.08), transparent 55%);
+  background-attachment: fixed;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -17,8 +109,491 @@ a {
 
 button {
   cursor: pointer;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
 }
 
 ul {
   list-style: none;
+}
+
+svg {
+  flex-shrink: 0;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.28);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Subtle scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.28) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.28);
+  border-radius: 99px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ==========================================================================
+   Primitives
+   ========================================================================== */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  transition: border-color var(--fast) var(--ease);
+}
+
+.card-pad {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.card-subtitle {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Buttons ---------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 550;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--ink);
+  transition:
+    background var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: var(--surface-3);
+  border-color: var(--border-strong);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover {
+  background: #4be0f7;
+  border-color: transparent;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ink-2);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-2);
+  border-color: transparent;
+  color: var(--ink);
+}
+
+.btn-icon {
+  padding: 8px;
+}
+
+.btn .spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Inputs ----------------------------------------------------------------- */
+
+.input,
+.select {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 12px;
+  transition: border-color var(--fast) var(--ease);
+}
+
+.input::placeholder {
+  color: var(--ink-3);
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.select {
+  appearance: none;
+  padding-right: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238494ad' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box > svg {
+  position: absolute;
+  left: 11px;
+  color: var(--ink-3);
+  pointer-events: none;
+}
+
+.search-box .input {
+  padding-left: 34px;
+  width: 100%;
+}
+
+/* Badges & chips --------------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.badge.sev-critical { background: var(--sev-critical-tint); color: var(--sev-critical-text); }
+.badge.sev-high     { background: var(--sev-high-tint);     color: var(--sev-high-text); }
+.badge.sev-medium   { background: var(--sev-medium-tint);   color: var(--sev-medium-text); }
+.badge.sev-low      { background: var(--sev-low-tint);      color: var(--sev-low-text); }
+.badge.sev-unknown  { background: var(--sev-unknown-tint);  color: var(--sev-unknown-text); }
+
+.badge.st-success { background: var(--ok-tint);   color: var(--ok-text); }
+.badge.st-failed  { background: var(--fail-tint); color: var(--fail-text); }
+.badge.st-skipped { background: var(--skip-tint); color: var(--skip-text); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2.5px 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 550;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.chip.chip-accent {
+  background: var(--accent-tint);
+  border-color: rgba(34, 211, 238, 0.25);
+  color: var(--accent);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+/* Filter chips ----------------------------------------------------------- */
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+  background: transparent;
+  transition:
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.filter-chip:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.filter-chip.active {
+  background: var(--accent-tint);
+  border-color: rgba(34, 211, 238, 0.4);
+  color: var(--accent);
+}
+
+/* Skeletons & data states ------------------------------------------------ */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.1), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.data-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  padding: 48px 24px;
+  color: var(--ink-2);
+}
+
+.data-state svg {
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+
+.data-state h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.data-state p {
+  font-size: 13px;
+  color: var(--ink-3);
+  max-width: 420px;
+}
+
+.data-state .btn {
+  margin-top: 12px;
+}
+
+/* Refreshing overlay: hold the previous render, just dim it */
+.dim-while-refreshing {
+  transition: opacity 220ms var(--ease);
+}
+
+.dim-while-refreshing.is-refreshing {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Page transitions ------------------------------------------------------- */
+
+.page {
+  animation: page-in 260ms var(--ease);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Page header ------------------------------------------------------------ */
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.page-header .page-sub {
+  color: var(--ink-3);
+  font-size: 13.5px;
+  margin-top: 3px;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables ------------------------------------------------------------------ */
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background var(--fast) var(--ease);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr.row-link {
+  cursor: pointer;
+}
+
+.data-table tbody tr.row-link:hover {
+  background: var(--surface-2);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Utility ---------------------------------------------------------------- */
+
+.muted {
+  color: var(--ink-3);
+}
+
+.text-2 {
+  color: var(--ink-2);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stack-xs { display: flex; flex-direction: column; gap: 4px; }
+.row { display: flex; align-items: center; gap: 8px; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
