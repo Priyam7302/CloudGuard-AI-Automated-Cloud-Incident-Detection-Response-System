@@ -1,0 +1,135 @@
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 760px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.settings-row:first-of-type {
+  border-top: none;
+}
+
+.settings-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.settings-row-text strong {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.settings-row-text .muted {
+  font-size: 12.5px;
+}
+
+.endpoint-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 6px 6px 12px;
+  max-width: 340px;
+  min-width: 0;
+}
+
+.endpoint-box code {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.test-result {
+  margin-top: 10px;
+  font-size: 12.5px;
+  font-weight: 550;
+  padding: 9px 13px;
+  border-radius: var(--radius-sm);
+}
+
+.test-result.ok {
+  background: var(--ok-tint);
+  color: var(--ok-text);
+}
+
+.test-result.fail {
+  background: var(--fail-tint);
+  color: var(--fail-text);
+}
+
+/* Switch ------------------------------------------------------------------ */
+
+.switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+  flex-shrink: 0;
+}
+
+.switch.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: transform 180ms var(--ease), background var(--fast) var(--ease);
+}
+
+.switch.on .switch-thumb {
+  transform: translateX(18px);
+  background: var(--accent-ink);
+}
+
+/* About ------------------------------------------------------------------- */
+
+.about-text {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  max-width: 620px;
+}
+
+.about-stack {
+  margin-top: 14px;
+}
+
+.about-link {
+  margin-top: 16px;
+  align-self: flex-start;
+  display: inline-flex;
+}
+
+@media (max-width: 600px) {
+  .settings-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .endpoint-box {
+    max-width: 100%;
+    width: 100%;
+  }
+}

@@ -1,27 +1,65 @@
-.summary {
-    display: flex;
-    gap: 20px;
-    margin-top: 30px;
-    flex-wrap: wrap;
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: 16px 18px;
+  transition:
+    transform var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
 }
 
-.summary-card {
-    background: #1e293b;
-    width: 220px;
-    padding: 20px;
-    border-radius: 10px;
-    transition: 0.3s;
+.stat-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
 }
 
-.summary-card:hover {
-    transform: translateY(-5px);
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.summary-card h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
+.stat-label {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--ink-2);
 }
 
-.summary-card h1 {
-    font-size: 40px;
+.stat-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--surface-2);
+  color: var(--ink-2);
 }
+
+.stat-value {
+  font-size: 27px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-top: 8px;
+}
+
+.stat-hint {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 3px;
+}
+
+/* Tones ------------------------------------------------------------------ */
+
+.tone-critical .stat-icon { background: var(--sev-critical-tint); color: var(--sev-critical-text); }
+.tone-high     .stat-icon { background: var(--sev-high-tint);     color: var(--sev-high-text); }
+.tone-medium   .stat-icon { background: var(--sev-medium-tint);   color: var(--sev-medium-text); }
+.tone-low      .stat-icon { background: var(--sev-low-tint);      color: var(--sev-low-text); }
+.tone-accent   .stat-icon { background: var(--accent-tint);       color: var(--accent); }
+
+.tone-critical .stat-value { color: var(--sev-critical-text); }
+.tone-high     .stat-value { color: var(--sev-high-text); }
+.tone-medium   .stat-value { color: var(--sev-medium-text); }
+.tone-low      .stat-value { color: var(--sev-low-text); }

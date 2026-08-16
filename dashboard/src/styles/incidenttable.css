@@ -1,71 +1,85 @@
-.table-container {
-    margin-top: 40px;
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 10px;
+.incident-table {
+  min-width: 640px;
 }
 
-.table-container h2 {
-    margin-bottom: 20px;
+.incident-id {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.cell-sub {
+  font-size: 11.5px;
 }
 
-th {
-    text-align: left;
-    padding: 15px;
-    background: #334155;
+.event-name {
+  font-weight: 550;
+  max-width: 200px;
 }
 
-td {
-    padding: 15px;
-    border-bottom: 1px solid #475569;
+.actor-cell {
+  max-width: 170px;
 }
 
-tr:hover {
-    background: #2b3648;
+.score-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 96px;
 }
 
-.severity,
-.status {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    display: inline-block;
+.score-num {
+  font-size: 13px;
+  font-weight: 600;
 }
 
-/* Severity */
-
-.critical {
-    background: #dc2626;
-    color: white;
+.mitre-cell {
+  gap: 5px;
 }
 
-.high {
-    background: #f59e0b;
-    color: black;
+.col-chevron {
+  width: 34px;
+  padding-right: 10px !important;
 }
 
-/* Status */
-
-.open {
-    background: #16a34a;
-    color: white;
+.row-chevron {
+  color: var(--ink-3);
+  transition: transform var(--fast) var(--ease), color var(--fast) var(--ease);
 }
 
-.investigating {
-    background: #2563eb;
-    color: white;
+.row-link:hover .row-chevron {
+  transform: translateX(3px);
+  color: var(--accent);
 }
 
-tbody tr {
-    cursor: pointer;
+/* Incidents page toolbar ------------------------------------------------- */
+
+.incidents-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
 }
 
-tbody tr:hover {
-    background: #334155;
+.incidents-search {
+  flex: 1;
+  min-width: 220px;
+  max-width: 380px;
+}
+
+.incidents-count {
+  font-size: 12px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--hairline);
+}
+
+@media (max-width: 1080px) {
+  .hide-md {
+    display: none;
+  }
+
+  .incident-table {
+    min-width: 480px;
+  }
 }
