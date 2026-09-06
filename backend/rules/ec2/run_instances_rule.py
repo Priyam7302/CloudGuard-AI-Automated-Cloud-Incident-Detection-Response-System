@@ -1,53 +1,53 @@
-"""
-CloudGuard AI
+# """
+# CloudGuard AI
 
-EC2 Rule
+# EC2 Rule
 
-Detect EC2 instance launch.
-"""
+# Detect EC2 instance launch.
+# """
 
-from rules.base_rule import DetectionRule
-from rules.detection import Detection
+# from rules.base_rule import DetectionRule
+# from rules.detection import Detection
 
 
-class RunInstancesRule(DetectionRule):
+# class RunInstancesRule(DetectionRule):
 
-    name = "RunInstances"
+#     name = "RunInstances"
 
-    category = "EC2"
+#     category = "EC2"
 
-    mitre = "T1583.002"
+#     mitre = "T1583.002"
 
-    severity = "Medium"
+#     severity = "Medium"
 
-    score = 25
+#     score = 25
 
-    recommendation = (
-        "Verify that the EC2 instance launch was authorized."
-    )
+#     recommendation = (
+#         "Verify that the EC2 instance launch was authorized."
+#     )
 
-    def evaluate(self, event, context):
+#     def evaluate(self, event, context):
 
-        if context.get("event_name") != "RunInstances":
+#         if context.get("event_name") != "RunInstances":
 
-            return Detection().to_dict()
+#             return Detection().to_dict()
 
-        return Detection(
+#         return Detection(
 
-            matched=True,
+#             matched=True,
 
-            rule=self.name,
+#             rule=self.name,
 
-            category=self.category,
+#             category=self.category,
 
-            severity=self.severity,
+#             severity=self.severity,
 
-            score=self.score,
+#             score=self.score,
 
-            reason="New EC2 instance launched.",
+#             reason="New EC2 instance launched.",
 
-            recommendation=self.recommendation,
+#             recommendation=self.recommendation,
 
-            mitre=self.mitre
+#             mitre=self.mitre
 
-        ).to_dict()
+#         ).to_dict()
