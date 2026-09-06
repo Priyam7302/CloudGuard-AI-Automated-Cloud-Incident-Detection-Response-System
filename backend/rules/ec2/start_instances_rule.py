@@ -1,53 +1,53 @@
-"""
-CloudGuard AI
+# """
+# CloudGuard AI
 
-EC2 Rule
+# EC2 Rule
 
-Detect EC2 instance start.
-"""
+# Detect EC2 instance start.
+# """
 
-from rules.base_rule import DetectionRule
-from rules.detection import Detection
+# from rules.base_rule import DetectionRule
+# from rules.detection import Detection
 
 
-class StartInstancesRule(DetectionRule):
+# class StartInstancesRule(DetectionRule):
 
-    name = "StartInstances"
+#     name = "StartInstances"
 
-    category = "EC2"
+#     category = "EC2"
 
-    mitre = "T1583.002"
+#     mitre = "T1583.002"
 
-    severity = "Low"
+#     severity = "Low"
 
-    score = 15
+#     score = 15
 
-    recommendation = (
-        "Verify that the EC2 instance was intentionally started."
-    )
+#     recommendation = (
+#         "Verify that the EC2 instance was intentionally started."
+#     )
 
-    def evaluate(self, event, context):
+#     def evaluate(self, event, context):
 
-        if context.get("event_name") != "StartInstances":
+#         if context.get("event_name") != "StartInstances":
 
-            return Detection().to_dict()
+#             return Detection().to_dict()
 
-        return Detection(
+#         return Detection(
 
-            matched=True,
+#             matched=True,
 
-            rule=self.name,
+#             rule=self.name,
 
-            category=self.category,
+#             category=self.category,
 
-            severity=self.severity,
+#             severity=self.severity,
 
-            score=self.score,
+#             score=self.score,
 
-            reason="EC2 instance started.",
+#             reason="EC2 instance started.",
 
-            recommendation=self.recommendation,
+#             recommendation=self.recommendation,
 
-            mitre=self.mitre
+#             mitre=self.mitre
 
-        ).to_dict()
+#         ).to_dict()
