@@ -1,53 +1,53 @@
-"""
-CloudGuard AI
+# """
+# CloudGuard AI
 
-EC2 Rule
+# EC2 Rule
 
-Detect EC2 instance stop.
-"""
+# Detect EC2 instance stop.
+# """
 
-from rules.base_rule import DetectionRule
-from rules.detection import Detection
+# from rules.base_rule import DetectionRule
+# from rules.detection import Detection
 
 
-class StopInstancesRule(DetectionRule):
+# class StopInstancesRule(DetectionRule):
 
-    name = "StopInstances"
+#     name = "StopInstances"
 
-    category = "EC2"
+#     category = "EC2"
 
-    mitre = "T1489"
+#     mitre = "T1489"
 
-    severity = "Medium"
+#     severity = "Medium"
 
-    score = 25
+#     score = 25
 
-    recommendation = (
-        "Verify that the EC2 instance stop request is authorized."
-    )
+#     recommendation = (
+#         "Verify that the EC2 instance stop request is authorized."
+#     )
 
-    def evaluate(self, event, context):
+#     def evaluate(self, event, context):
 
-        if context.get("event_name") != "StopInstances":
+#         if context.get("event_name") != "StopInstances":
 
-            return Detection().to_dict()
+#             return Detection().to_dict()
 
-        return Detection(
+#         return Detection(
 
-            matched=True,
+#             matched=True,
 
-            rule=self.name,
+#             rule=self.name,
 
-            category=self.category,
+#             category=self.category,
 
-            severity=self.severity,
+#             severity=self.severity,
 
-            score=self.score,
+#             score=self.score,
 
-            reason="EC2 instance stopped.",
+#             reason="EC2 instance stopped.",
 
-            recommendation=self.recommendation,
+#             recommendation=self.recommendation,
 
-            mitre=self.mitre
+#             mitre=self.mitre
 
-        ).to_dict()
+#         ).to_dict()
