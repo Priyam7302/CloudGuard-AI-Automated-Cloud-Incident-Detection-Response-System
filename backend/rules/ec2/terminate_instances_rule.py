@@ -1,53 +1,53 @@
-"""
-CloudGuard AI
+# """
+# CloudGuard AI
 
-EC2 Rule
+# EC2 Rule
 
-Detect EC2 instance termination.
-"""
+# Detect EC2 instance termination.
+# """
 
-from rules.base_rule import DetectionRule
-from rules.detection import Detection
+# from rules.base_rule import DetectionRule
+# from rules.detection import Detection
 
 
-class TerminateInstancesRule(DetectionRule):
+# class TerminateInstancesRule(DetectionRule):
 
-    name = "TerminateInstances"
+#     name = "TerminateInstances"
 
-    category = "EC2"
+#     category = "EC2"
 
-    mitre = "T1485"
+#     mitre = "T1485"
 
-    severity = "High"
+#     severity = "High"
 
-    score = 40
+#     score = 40
 
-    recommendation = (
-        "Investigate immediately. Confirm that instance termination was authorized."
-    )
+#     recommendation = (
+#         "Investigate immediately. Confirm that instance termination was authorized."
+#     )
 
-    def evaluate(self, event, context):
+#     def evaluate(self, event, context):
 
-        if context.get("event_name") != "TerminateInstances":
+#         if context.get("event_name") != "TerminateInstances":
 
-            return Detection().to_dict()
+#             return Detection().to_dict()
 
-        return Detection(
+#         return Detection(
 
-            matched=True,
+#             matched=True,
 
-            rule=self.name,
+#             rule=self.name,
 
-            category=self.category,
+#             category=self.category,
 
-            severity=self.severity,
+#             severity=self.severity,
 
-            score=self.score,
+#             score=self.score,
 
-            reason="EC2 instance terminated.",
+#             reason="EC2 instance terminated.",
 
-            recommendation=self.recommendation,
+#             recommendation=self.recommendation,
 
-            mitre=self.mitre
+#             mitre=self.mitre
 
-        ).to_dict()
+#         ).to_dict()
